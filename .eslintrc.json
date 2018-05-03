@@ -8,7 +8,10 @@
     "plugin:node/recommended"
   ],
   "env": {
-    "mocha": true
+    "mocha": true,
+    "browser": true,
+    "commonjs": true,
+    "shared-node-browser": true
   },
   "rules": {
     "mocha/no-exclusive-tests": "error",

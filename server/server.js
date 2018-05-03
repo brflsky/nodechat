@@ -12,7 +12,27 @@ const io = websockets(server)
 app.use('/', express.static(path.join(__dirname, '../public')))
 
 io.on('connection', (socket) => {
-  console.log('client connected:')
+  console.log('Client connected:')
+
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to chat...',
+    createAt: new Date().valueOf()
+  })
+
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New user entered chat',
+    createAt: new Date().valueOf()
+  })
+
+  socket.on('createMessage', data => {
+    console.log('createMessage:', data)
+    io.emit('newMessage', {
+      ...data,
+      createAt: new Date().valueOf()
+    })
+  })
 
   socket.on('disconnect', () => {
     console.log('Client disconnected...')
