@@ -22,5 +22,11 @@
     "node/no-unsupported-features": 0,
     "node/no-unpublished-require": 0,
     "no-console": 0
+  },
+  "globals": {
+    "io": true,
+    "jQuery": true,
+    "moment": true,
+    "Mustache": true
   }
 }
