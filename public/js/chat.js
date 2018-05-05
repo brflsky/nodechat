@@ -1,12 +1,46 @@
 var socket = io();
+let userID;
 
 socket.on('connect', function () {
-  console.log('Connected to server');
+  const params = jQuery.deparam(window.location.search)
+
+  socket.emit('join', params, (err) => {
+    if (err) {
+      alert(err)
+      window.location.href = '/'
+    } else {
+      console.log('No error')
+    }
+  })
 });
 
+socket.on('userID', function (data) {
+  userID = data.userID
+  const formattedTime = moment(data.message.createdAt).format('hh:mm')
+  const template = jQuery('#message-template').html()
+  const html = Mustache.render(template, {
+    text: data.message.text,
+    from: data.message.from,
+    createdAt: formattedTime
+  })
+
+  jQuery('#messages').append(html)
+})
+
 socket.on('disconnect', function () {
-  console.log('Disconnected from server');
+
+  
 });
+
+socket.on('updateUserList', function (userList) {
+  console.log('userList', userList)
+  const ol = jQuery('<ol></ol>')
+  userList.forEach(user => {
+    ol.append(jQuery('<li></li>').text(user))
+  })
+
+  jQuery('#users').html(ol)
+})
 
 socket.on('newMessage', function (message) {
 
@@ -48,8 +82,8 @@ jQuery('#message-form').on('submit', function (e) {
   var messageTextbox = jQuery('[name=message]');
 
   socket.emit('createMessage', {
-    from: 'User',
-    text: messageTextbox.val()
+    text: messageTextbox.val(),
+    userID
   }, function () {
     messageTextbox.val('')
   });

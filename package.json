@@ -2,7 +2,7 @@
   "name": "notes",
   "version": "1.0.0",
   "description": "",
-  "main": "debugging.js",
+  "main": "server/utils/usersS.js",
   "scripts": {
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha server/**/*.test.js --timeout 5000",
     "test-watch": "nodemon --exec \"npm test\"",
